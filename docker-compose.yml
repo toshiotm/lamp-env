@@ -1,29 +1,23 @@
 postgresql:
-    image: orchardup/postgresql
-    environment:
-        - POSTGRES_USER=user
-        - POSTGRES_PASSWORD=password
-    volumes_from:
-        - data
+ image: orchardup/postgresql
+ volumes_from:
+  - data
+ container_name: pg-container
         
 apache-php:
-    image: php:5.6.19-apache
-    ports:
-        - "80:80"
-    volumes:
-        - .:/var/www/html
-    links:
-        - postgresql:pg
-        
-phpmyadmin:
-    image: phpmyadmin/phpmyadmin:4.5.3.1-1
-    ports:
-        - "8080:8080"
-    links:
-        - postgresql:pg
+ build: ./docker/php
+ ports:
+  - "8765:80"
+ volumes:
+  - .:/var/www/html
+  - ./php:/usr/local/etc/php
+ links:
+  - postgresql:pg
+ container_name: web-container
         
 data:
-  image: centos:centos7
-  command: /bin/bash
-  volumes:
-    - /var/lib/postgresql
+ image: centos:centos7
+ command: /bin/bash
+ volumes:
+ - /var/lib/postgresql
+ container_name: data-container
