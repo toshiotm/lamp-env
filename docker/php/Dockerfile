@@ -1,7 +1,7 @@
 FROM php:7.0-apache
 
-RUN apt-get update
-RUN apt-get install -y \ 
+RUN apt-get update && \
+    apt-get install -y \ 
     libicu-dev \ 
     libpq-dev
 RUN docker-php-ext-install intl
